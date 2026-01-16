@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 const STORAGE_KEY = "trackmyleet-entries";
 
 const TOPICS = [
@@ -127,6 +128,7 @@ export default function AddEntriesPage() {
   }
 
   return (
+    <div>
     <div className="min-h-screen bg-[#0a162b] text-white p-8">
         <Navbar/>
       <div className="max-w-7xl mx-auto pt-28">
@@ -413,10 +415,16 @@ export default function AddEntriesPage() {
               >
                 Save
               </button>
+              
             </div>
+            
           </div>
+            
         </div>
       )}
+      
+    </div>
+    <Footer/>
     </div>
   );
 }

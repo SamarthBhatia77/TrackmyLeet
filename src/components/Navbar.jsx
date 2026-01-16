@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { User, LogOut } from "lucide-react";
 
 export default function Navbar() {
@@ -16,10 +17,14 @@ export default function Navbar() {
                    bg-white/5 backdrop-blur-xl border border-white/10
                    flex items-center justify-between shadow-lg"
       >
-        {/* LEFT: LOGO */}
-        <div className="text-2xl font-semibold tracking-tight select-none">
-          <span className="text-white">Trackmy</span>
-          <span className="text-[#73a5f5]">Leet</span>
+        {/* LEFT: LOGO + BRAND */}
+        <div className="flex items-center gap-3 select-none">
+          <div className="text-2xl font-semibold tracking-tight">
+            <span className="text-white">Trackmy</span>
+            <span className="text-[#73a5f5]">Leet</span>
+          </div>
+
+          
         </div>
 
         {/* RIGHT: USER MENU */}
@@ -61,3 +66,4 @@ export default function Navbar() {
     </div>
   );
 }
+
