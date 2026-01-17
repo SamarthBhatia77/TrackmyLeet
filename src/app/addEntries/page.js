@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Pencil, Trash2, StickyNote, X, ArrowUpDown } from "lucide-react";
+import { Plus, Pencil, Trash2, StickyNote, X, ArrowUpDown,Check } from "lucide-react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
@@ -46,11 +46,13 @@ export default function AddEntriesPage() {
 
   const emptyForm = {
     problemNo: "",
+    problemLink: "",
     topics: [],
     statement: "",
     date: "",
     pattern: "",
     notes: "",
+    status: false,
   };
 
   const [form, setForm] = useState(emptyForm);
@@ -239,7 +241,8 @@ export default function AddEntriesPage() {
                   <th>Date</th>
                   <th>Pattern</th>
                   <th>Notes</th>
-                  <th className="pr-2">Edit</th>
+                  <th>Edit</th>
+                  <th className="pr-2">Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -248,7 +251,21 @@ export default function AddEntriesPage() {
                     key={idx}
                     className="border-t border-white/10 hover:bg-white/5 transition"
                   >
-                    <td className="py-4 pl-4 font-medium">{e.problemNo}</td>
+                    <td className="py-4 pl-4 font-medium">
+                      {e.problemLink ? (
+                        <a
+                          href={e.problemLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[#73a5f5] hover:underline"
+                        >
+                          {e.problemNo}
+                        </a>
+                      ) : (
+                        e.problemNo
+                      )}
+                    </td>
+
                     <td className="py-4">
                       <div className="flex justify-center flex-wrap gap-2">
                         {e.topics.map((t) => (
@@ -290,6 +307,31 @@ export default function AddEntriesPage() {
                         <Pencil />
                       </button>
                     </td>
+                    {/* STATUS COLUMN */}
+                    <td className="py-4">
+                      <button
+                        onClick={() => {
+                          const updated = [...entries];
+                          updated[idx] = {
+                            ...updated[idx],
+                            status: !updated[idx].status,
+                          };
+                          setEntries(updated);
+                        }}
+                        className="hover:scale-110 transition"
+                      >
+                        <Check
+                          size={22}
+                          strokeWidth={3}
+                          fill="none"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className={e.status ? "text-green-400" : "text-white/20"}
+                        />
+
+                      </button>
+                    </td>
+
                   </tr>
                 ))}
               </tbody>
@@ -335,6 +377,16 @@ export default function AddEntriesPage() {
                 onChange={(e) => setForm({ ...form, problemNo: e.target.value })}
                 className="input"
               />
+              <input
+                placeholder="Problem Link (optional)"
+                value={form.problemLink}
+                onChange={(e) =>
+                  setForm({ ...form, problemLink: e.target.value })
+                }
+                className="input"
+                type="url"
+              />
+
               <input
                 type="date"
                 value={form.date}
