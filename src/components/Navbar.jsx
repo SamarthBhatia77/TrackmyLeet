@@ -25,8 +25,7 @@ export default function Navbar() {
   >
     {/* LEFT: LOGO */}
     <div
-      className="flex items-center cursor-pointer select-none"
-      onClick={() => router.push("/addEntries")}
+      className="flex items-center select-none"
     >
       <Image
         src="/webLogo.png"
