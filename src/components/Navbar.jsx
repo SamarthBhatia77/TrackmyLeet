@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 import Image from "next/image";
 import { User, LogOut } from "lucide-react";
@@ -9,6 +9,7 @@ import { User, LogOut } from "lucide-react";
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
 
 
   return (
@@ -36,23 +37,29 @@ export default function Navbar() {
   
   {/* TODO BUTTON */}
   <button
-    onClick={() => router.push("/Todo")}
-    className="px-4 py-2 rounded-full text-sm
-               text-[#73a5f5] border border-[#73a5f5]/30
-               bg-[#73a5f5]/10 backdrop-blur
-               hover:bg-[#73a5f5]/20 transition"
-  >
-    Todo
-  </button>
+  onClick={() => router.push("/Todo")}
+  className={`px-4 py-2 rounded-full text-sm backdrop-blur transition
+    ${
+      pathname === "/Todo"
+        ? "bg-[#73a5f5]/80 text-[#192d47] border border-[#93b2d9]"
+        : "text-[#73a5f5] border border-[#73a5f5]/30 bg-[#73a5f5]/10 hover:bg-[#73a5f5]/20"
+    }`}
+>
+  Todo
+</button>
+
   <button
-    onClick={() => router.push("/addEntries")}
-    className="px-4 py-2 rounded-full text-sm
-               text-[#73a5f5] border border-[#73a5f5]/30
-               bg-[#73a5f5]/10 backdrop-blur
-               hover:bg-[#73a5f5]/20 transition"
-  >
-    LeetTracker
-  </button>
+  onClick={() => router.push("/addEntries")}
+  className={`px-4 py-2 rounded-full text-sm backdrop-blur transition
+    ${
+      pathname === "/addEntries"
+        ? "bg-[#73a5f5]/80 text-[#192d47] border border-[#93b2d9]"
+        : "text-[#73a5f5] border border-[#73a5f5]/30 bg-[#73a5f5]/10 hover:bg-[#73a5f5]/20"
+    }`}
+>
+  LeetTracker
+</button>
+
 
   {/* USER ICON */}
   <div className="relative">

@@ -9,12 +9,10 @@ const TODO_STORAGE_KEY = "trackmyleet-todos";
 
 
 const MOTIVATIONAL_QUOTES = [
-  "Consistency beats intensity.",
-  "Small progress is still progress.",
-  "Discipline builds freedom.",
-  "One problem at a time.",
-  "Future you will thank you.",
-  "Show up every day.",
+  "God helps those who help themselves",
+  "Stay motivated, and work hard",
+  "When the road gets tough, the tough get going",
+  "Remember why you started",
 ];
 
 export default function TodoPage() {
