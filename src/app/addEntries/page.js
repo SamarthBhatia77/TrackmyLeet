@@ -30,6 +30,15 @@ const TOPICS = [
   "Math",
   "Hash Table",
 ];
+const MOTIVATIONAL_QUOTES = [
+  "Consistency beats intensity.",
+  "Small progress every day adds up.",
+  "Solve less, understand more.",
+  "Patterns matter more than problems.",
+  "Clarity comes from repetition.",
+  "Future you will thank you.",
+  "One problem at a time.",
+];
 
 export default function AddEntriesPage() {
   const [entries, setEntries] = useState([]);
@@ -98,6 +107,8 @@ export default function AddEntriesPage() {
         return 0;
   });
 
+  const todayQuote =
+  MOTIVATIONAL_QUOTES[new Date().getDate() % MOTIVATIONAL_QUOTES.length];
 
   function openAddModal() {
     setEditIndex(null);
@@ -134,6 +145,19 @@ export default function AddEntriesPage() {
     <div className="min-h-screen bg-[#0a162b] text-white p-8">
         <Navbar/>
       <div className="max-w-7xl mx-auto pt-28">
+        {/* PAGE HEADER */}
+        <div className="mb-10">
+          <h1 className="text-4xl font-bold tracking-tight">
+            <span className="text-white">Revisit Important </span>
+            <span className="text-[#73a5f5]">Coding Questions 👩🏻‍💻</span>
+          </h1>
+
+          <p className="mt-3 text-white/60 text-lg">
+            Thought of the day:{" "}
+            <span className="italic text-white/80">"{todayQuote}"</span>
+          </p>
+        </div>
+
         <div className="flex justify-between items-center mb-10">
           
           <div className="flex items-center gap-4 relative">

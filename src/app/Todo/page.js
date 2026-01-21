@@ -107,12 +107,17 @@ useEffect(() => {
 
           {/* HEADER */}
           <div className="flex justify-between items-center mb-6">
-            <div>
-              <h1 className="text-3xl font-bold">Manage your tasks 📚</h1>
-              <p className="text-white/60 mt-1">
-                Thought of the day: "{todayQuote}"
-              </p>
-            </div>
+            <div className="mb-10">
+          <h1 className="text-4xl font-bold tracking-tight">
+            <span className="text-white">Manage Your </span>
+            <span className="text-[#73a5f5]">Daily Tasks 📚</span>
+          </h1>
+
+          <p className="mt-3 text-white/60 text-lg">
+            Thought of the day:{" "}
+            <span className="italic text-white/80">"{todayQuote}"</span>
+          </p>
+        </div>
 
             <div className="text-right">
               <p className="text-white/60 text-sm">Current Date & Time</p>
@@ -141,9 +146,7 @@ useEffect(() => {
           {/* ADD BUTTON */}
           <button
             onClick={() => setOpen(true)}
-            className="flex items-center gap-2 mb-6 px-5 py-2.5
-                       bg-[#73a5f5] rounded-full shadow-lg
-                       hover:scale-[1.02] transition"
+            className="flex items-center gap-2 mb-8 px-5 py-2.5 bg-gradient-to-r from-[#2d4096] to-[#3f5bd8] rounded-full shadow-lg hover:scale-[1.02] transition"
           >
             <Plus size={18} /> Add New Task
           </button>
