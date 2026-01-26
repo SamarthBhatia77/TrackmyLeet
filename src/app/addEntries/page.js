@@ -142,7 +142,7 @@ export default function AddEntriesPage() {
 
   return (
     <div>
-    <div className="min-h-screen bg-[#0a162b] text-white p-8">
+    <div className="min-h-screen bg-gradient-to-b from-[#1e3459] to-[#020617] text-white p-8">
         <Navbar/>
       <div className="max-w-7xl mx-auto pt-28">
         {/* PAGE HEADER */}

@@ -1,15 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
-import { LogOut } from "lucide-react";
+import { LogOut,Settings,User } from "lucide-react";
 
 export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
   const { data: session } = useSession();
+
+  
 
   const [open, setOpen] = useState(false);
 
@@ -66,21 +68,21 @@ export default function Navbar() {
 
           {/* USER PROFILE (HOVER SAFE) */}
 {session && (
-  <div
-    className="relative"
-    onMouseEnter={() => setOpen(true)}
-    onMouseLeave={() => setOpen(false)}
-  >
+  <div className="relative">
     {/* PROFILE IMAGE */}
-    <button className="p-1 rounded-full hover:bg-white/10 transition">
-      <Image
-        src={session.user.image}
-        alt="User"
-        width={36}
-        height={36}
-        className="rounded-full"
-      />
-    </button>
+    <button
+  onClick={() => setOpen((prev) => !prev)}
+  className="p-1 rounded-full hover:bg-white/10 transition"
+>
+  <Image
+    src={session.user.image}
+    alt="User"
+    width={36}
+    height={36}
+    className="rounded-full"
+  />
+</button>
+
 
     {/* DROPDOWN */}
     {open && (
@@ -103,20 +105,44 @@ export default function Navbar() {
             </p>
           </div>
 
+          <button
+            onClick={() => {
+              setOpen(false);
+              router.push("/user-profile");
+            }}
+            className="w-full px-4 py-3 text-left text-sm
+                      text-white hover:bg-white/10
+                      flex items-center gap-2"
+          >
+            <User size={16} />
+            Profile
+          </button>
+
+
           {/* ACTIONS */}
           <button
-            onClick={() =>
-              signOut({
-                callbackUrl: "/signIn",
-              })
-            }
+            onClick={() => {
+              setOpen(false);
+              router.push("/settings");
+            }}
+            className="w-full px-4 py-3 text-left text-sm text-white hover:bg-white/10 flex items-center gap-2">
+            <Settings size={16} />
+            Settings
+          </button>
+
+          <button
+            onClick={() => {
+              setOpen(false);
+              signOut({ callbackUrl: "/signIn" });
+            }}
             className="w-full px-4 py-3 text-left text-sm
                       text-red-400 hover:bg-white/10
                       flex items-center gap-2"
-            >
+          >
             <LogOut size={16} />
             Logout
           </button>
+
 
         </div>
       </div>

@@ -102,8 +102,8 @@ useEffect(() => {
     <div>
       <Navbar />
 
-      <div className="min-h-screen bg-[#0a162b] text-white p-8 mt-10">
-        <div className="max-w-5xl mx-auto pt-20">
+      <div className="min-h-screen bg-gradient-to-b from-[#1e3459] to-[#020617] text-white p-8 mt-0">
+        <div className="max-w-5xl mx-auto pt-24">
 
           {/* HEADER */}
           <div className="flex justify-between items-center mb-6">
