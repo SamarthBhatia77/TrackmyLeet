@@ -3,3 +3,24 @@
 .input {
   @apply w-full px-4 py-2 rounded-xl bg-white/10 border border-white/20 text-white outline-none;
 }
+.color-github-1 { fill: #9be9a8; }
+.color-github-2 { fill: #40c463; }
+.color-github-3 { fill: #30a14e; }
+.color-github-4 { fill: #216e39; }
+.color-empty { fill: #161b22; }
+
+@keyframes dropdown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-dropdown {
+  animation: dropdown 160ms ease-out forwards;
+  transform-origin: top right;
+}
