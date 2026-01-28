@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -26,18 +27,26 @@ export default function UserProfilePage() {
   const { data: session } = useSession();
 
   const [leetcodeData, setLeetcodeData] = useState(null);
+  const [leetcodeLoading, setLeetcodeLoading] = useState(true);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
 
   /* ---------------- Fetch LeetCode stats (UNCHANGED) ---------------- */
   useEffect(() => {
-    async function fetchLeetCode() {
+  async function fetchLeetCode() {
+    try {
       const res = await fetch("/api/leetcode/stats");
       const data = await res.json();
       setLeetcodeData(data);
+    } catch (err) {
+      console.error("Failed to fetch LeetCode stats", err);
+    } finally {
+      setLeetcodeLoading(false);
     }
-    fetchLeetCode();
-  }, []);
+  }
+  fetchLeetCode();
+}, []);
+
 
   /* ---------------- Fetch user profile from DB ---------------- */
   useEffect(() => {
@@ -51,12 +60,12 @@ export default function UserProfilePage() {
   }, []);
 
   if (loading || !profile) {
-    return (
-      <div className="min-h-screen bg-[#020617] text-white flex items-center justify-center">
-        Loading profile…
-      </div>
-    );
+    return <LoadingSpinner text="Loading profile page..." />;
   }
+
+
+
+
 
   const linked = leetcodeData?.linked;
 
@@ -189,58 +198,66 @@ export default function UserProfilePage() {
             {/* ================= LEETCODE STATS (UNCHANGED) ================= */}
             <section className="bg-[#0F172A] rounded-xl p-6 border border-white/10">
               <h2 className="text-lg font-semibold mb-6">LeetCode Stats</h2>
+            {leetcodeLoading ? (
+  <LeetCodeLoader />
+) : !leetcodeData?.linked ? (
+  <p className="text-white/60 italic">
+    Please link your LeetCode profile to display stats.
+  </p>
+) : (
+  <>
+    {/* STAT CARDS */}
+    <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+      <StatCard label="Total Solved" value={leetcodeData.profile.totalSolved} />
+      <StatCard label="Easy" value={leetcodeData.profile.easySolved} variant="green" />
+      <StatCard label="Medium" value={leetcodeData.profile.mediumSolved} variant="yellow" />
+      <StatCard label="Hard" value={leetcodeData.profile.hardSolved} variant="red" />
+      <StatCard label="Global Rank" value={leetcodeData.profile.ranking} />
+    </div>
 
-              {!linked ? (
-                <p className="text-white/60 italic">
-                  Please link your LeetCode profile to display stats.
-                </p>
-              ) : (
-                <>
-                  {/* STAT CARDS */}
-                  <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-                    <StatCard label="Total Solved" value={leetcodeData.profile.totalSolved} />
-                    <StatCard label="Easy" value={leetcodeData.profile.easySolved} variant="green" />
-                    <StatCard label="Medium" value={leetcodeData.profile.mediumSolved} variant="yellow" />
-                    <StatCard label="Hard" value={leetcodeData.profile.hardSolved} variant="red" />
-                    <StatCard label="Global Rank" value={leetcodeData.profile.ranking} />
-                  </div>
+    {/* HEATMAP */}
+    <div className="bg-[#020617] p-6 rounded-xl border border-white/10 mb-8">
+      <h3 className="text-lg font-semibold mb-4">
+        Daily Solving Activity
+      </h3>
 
-                  {/* HEATMAP */}
-                  <div className="bg-[#020617] p-6 rounded-xl border border-white/10 mb-8">
-                    <h3 className="text-lg font-semibold mb-4">
-                      Daily Solving Activity
-                    </h3>
+      <CalendarHeatmap
+        startDate={new Date(new Date().setFullYear(new Date().getFullYear() - 1))}
+        endDate={new Date()}
+        values={heatmapData}
+        classForValue={(value) => {
+          if (!value) return "color-empty";
+          if (value.count >= 5) return "color-github-4";
+          if (value.count >= 3) return "color-github-3";
+          if (value.count >= 1) return "color-github-2";
+          return "color-github-1";
+        }}
+      />
+    </div>
 
-                    <CalendarHeatmap
-                      startDate={new Date(new Date().setFullYear(new Date().getFullYear() - 1))}
-                      endDate={new Date()}
-                      values={heatmapData}
-                      classForValue={(value) => {
-                        if (!value) return "color-empty";
-                        if (value.count >= 5) return "color-github-4";
-                        if (value.count >= 3) return "color-github-3";
-                        if (value.count >= 1) return "color-github-2";
-                        return "color-github-1";
-                      }}
-                    />
-                  </div>
+    {/* RECENT SUBMISSIONS */}
+    <div className="bg-[#020617] p-6 rounded-xl border border-white/10">
+      <h3 className="text-lg font-semibold mb-4">Recent Submissions</h3>
+      <ul className="divide-y divide-white/10">
+        {leetcodeData.recentSubmissions.map((s, i) => (
+          <li key={i} className="py-2 text-sm flex justify-between">
+            <span>{s.title}</span>
+            <span
+              className={
+                s.statusDisplay === "Accepted"
+                  ? "text-green-400"
+                  : "text-red-400"
+              }
+            >
+              {s.statusDisplay}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </>
+)}
 
-                  {/* RECENT SUBMISSIONS */}
-                  <div className="bg-[#020617] p-6 rounded-xl border border-white/10">
-                    <h3 className="text-lg font-semibold mb-4">Recent Submissions</h3>
-                    <ul className="divide-y divide-white/10">
-                      {leetcodeData.recentSubmissions.map((s, i) => (
-                        <li key={i} className="py-2 text-sm flex justify-between">
-                          <span>{s.title}</span>
-                          <span className={s.statusDisplay === "Accepted" ? "text-green-400" : "text-red-400"}>
-                            {s.statusDisplay}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </>
-              )}
             </section>
           </div>
         </div>
@@ -264,6 +281,19 @@ function StatCard({ label, value, variant = "neutral" }) {
     <div className={`rounded-lg p-4 border transition ${styles[variant]}`}>
       <p className="text-sm text-white/60">{label}</p>
       <p className="text-2xl font-bold mt-1">{value}</p>
+    </div>
+  );
+}
+
+function LeetCodeLoader() {
+  return (
+    <div className="flex flex-col items-center justify-center py-12 gap-3">
+      <div className="w-10 h-10 border-4 border-[#73a5f5]/30
+                      border-t-[#73a5f5]
+                      rounded-full animate-spin" />
+      <p className="text-sm text-[#73a5f5] font-medium">
+        Fetching your LeetCode stats…
+      </p>
     </div>
   );
 }

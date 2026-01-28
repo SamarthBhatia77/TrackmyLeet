@@ -5,10 +5,13 @@ import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 export default function AllUsersPage() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  
 
   useEffect(() => {
     async function fetchUsers() {
@@ -27,13 +30,8 @@ export default function AllUsersPage() {
   }, []);
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-[#020617] text-white flex items-center justify-center">
-        Loading users…
-      </div>
-    );
+    return <LoadingSpinner text="Loading users..." />;
   }
-
   const ONLINE_THRESHOLD_MS = 5 * 60 * 1000;
 
   return (
@@ -87,11 +85,13 @@ export default function AllUsersPage() {
                         </div>
                       </div>
 
-                      {(user.city || user.college) && (
+                      {(user.city || user.college || user.bio) && (
                         <div className="mt-3 text-sm text-white/60">
                           {user.city && <span>📍 {user.city}</span>}
                           {user.city && user.college && " · "}
                           {user.college && <span>🎓 {user.college}</span>}
+                          <br/>
+                          {user.bio && <span>{user.bio}</span>}
                         </div>
                       )}
 
