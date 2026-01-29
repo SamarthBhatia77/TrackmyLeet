@@ -21,7 +21,7 @@ export default function FakeLoadingPage() {
   useEffect(() => {
     const completed = sessionStorage.getItem("fake-loader-complete");
     if (completed) {
-      router.replace("/signIn");
+      router.replace("/signup");
       return;
     }
 
@@ -40,7 +40,7 @@ export default function FakeLoadingPage() {
           sessionStorage.setItem("fake-loader-complete", "true");
 
           setTimeout(() => {
-            router.replace("/signIn");
+            router.replace("/signup");
           }, 300);
 
           return 100;

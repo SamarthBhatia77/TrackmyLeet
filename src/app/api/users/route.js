@@ -11,6 +11,8 @@ export async function GET() {
       {
         name: 1,
         image: 1,
+        bio: 1,
+        _id:1,
         city: 1,
         college: 1,
         skills: 1,

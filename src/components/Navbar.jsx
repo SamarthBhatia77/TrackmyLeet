@@ -157,7 +157,7 @@ export default function Navbar() {
                     <button
                       onClick={() => {
                         setOpen(false);
-                        signOut({ callbackUrl: "/signIn" });
+                        signOut({ callbackUrl: "/signup" });
                       }}
                       className="w-full px-4 py-3 text-left text-sm
                                  text-red-400 hover:bg-white/10

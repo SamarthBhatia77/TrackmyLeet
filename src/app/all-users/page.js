@@ -85,15 +85,22 @@ export default function AllUsersPage() {
                         </div>
                       </div>
 
-                      {(user.city || user.college || user.bio) && (
-                        <div className="mt-3 text-sm text-white/60">
-                          {user.city && <span>📍 {user.city}</span>}
-                          {user.city && user.college && " · "}
-                          {user.college && <span>🎓 {user.college}</span>}
-                          <br/>
-                          {user.bio && <span>{user.bio}</span>}
-                        </div>
-                      )}
+                      {/* LOCATION & COLLEGE */}
+                        {(user.city || user.college) && (
+                          <div className="mt-3 text-sm text-white/60">
+                            {user.city && <span>📍 {user.city}</span>}
+                            {user.city && user.college && " · "}
+                            {user.college && <span>🎓 {user.college}</span>}
+                          </div>
+                        )}
+
+                        {/* BIO */}
+                        {user.bio && (
+                          <p className="mt-2 text-sm text-white/70 italic line-clamp-2">
+                            “{user.bio}”
+                          </p>
+                        )}
+
 
                       {user.skills?.length > 0 && (
                         <div className="mt-3 flex flex-wrap gap-2">
