@@ -6,7 +6,7 @@ export default function Home({children}) {
   const router = useRouter();
 
   useEffect(() => {
-    router.replace("/fakeLoading");
+    router.replace("/signup");
   }, [router]);
 
   return null;

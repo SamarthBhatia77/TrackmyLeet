@@ -1,17 +1,31 @@
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import dbConnect from "@/lib/db";
-import User from "@/models/User";
-import mongoose from "mongoose";
 
-export default async function UserPublicProfile({ params: {id} }) {
- 
+export default async function UserPublicProfile({ params }) {
+  const { id } = await params;
 
-  await dbConnect();
-   const objectId = new mongoose.Types.ObjectId(id);
- const user = await User.findById(objectId).lean();
+  if (!id) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-white">
+        Invalid user
+      </div>
+    );
+  }
 
+  const res = await fetch(`/api/users/${id}`, {
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-white">
+        User not found
+      </div>
+    );
+  }
+
+  const user = await res.json();
 
   return (
     <div>
@@ -33,7 +47,6 @@ export default async function UserPublicProfile({ params: {id} }) {
 
             <div className="text-center">
               <h1 className="text-2xl font-semibold">{user.name}</h1>
-              <p className="text-white/60">@{user.email.split("@")[0]}</p>
             </div>
 
             {(user.city || user.college) && (

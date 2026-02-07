@@ -25,7 +25,7 @@ export async function GET() {
     // ✅ FIX: ensure _id is a proper string
     const safeUsers = users.map((user) => ({
       ...user,
-      _id: user._id.toString(),
+      _id: user._id,
     }));
 
     return NextResponse.json({ users: safeUsers });
